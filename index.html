@@ -3,12 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>숙이네농장 | 대전 동구 신상동 제철 농산물</title>
-  <meta name="description" content="대전광역시 동구 신상동 숙이네농장입니다. 직접 재배한 제철 농산물과 농장 소식, 수확·판매 정보를 소개합니다. 예약 후 농장 방문 수령이 가능합니다." />
-  <meta property="og:title" content="숙이네농장 | 대전 동구 신상동 제철 농산물" />
-  <meta property="og:description" content="대전광역시 동구 신상동 숙이네농장입니다. 직접 재배한 제철 농산물과 농장 소식, 수확·판매 정보를 소개합니다." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://beomtaegi2-create.github.io/" />
+  <title>숙이네농장</title>
   <style>
     :root{
       --green:#2f6b3c;
@@ -127,6 +122,7 @@
       <a href="#spring">봄나물</a>
       <a href="#crops">재배작물</a>
       <a href="#photos">농장사진</a>
+      <a href="#news">농장소식</a>
       <a href="#sale">판매안내</a>
       <a href="#contact">연락</a>
     </nav>
@@ -152,10 +148,6 @@
       산속의 작은 농장에서 직접 심고, 물 주고, 수확합니다.
       이른 봄 산나물부터 여름·가을 농산물까지 계절 따라 이어지는 숙이네농장의 모습을 담습니다.
     </p>
-    <div class="notice">
-      <strong>홈페이지 첫 버전입니다.</strong><br>
-      농장 이름, 소개 글, 연락처, 사진은 나중에 언제든지 바꿀 수 있습니다.
-    </div>
   </div>
 </section>
 
@@ -208,6 +200,16 @@
   </div>
 </section>
 
+
+<section id="news">
+  <div class="wrap">
+    <h2 class="section-title">농장소식</h2>
+    <p class="lead">Blogger에 올린 숙이네농장의 새 글과 사진입니다.</p>
+    <div id="farm-posts" class="cards"><div class="card">농장소식을 불러오는 중입니다.</div></div>
+    <p><a class="btn" style="background:var(--green);color:white" href="https://sooginefarm.blogspot.com/" target="_blank" rel="noopener noreferrer">농장소식 전체 보기</a></p>
+  </div>
+</section>
+
 <section id="sale">
   <div class="wrap">
     <h2 class="section-title">수확 · 판매 안내</h2>
@@ -237,5 +239,25 @@
 <footer>
   © 2026 숙이네농장 · 직접 키우고 직접 수확합니다.
 </footer>
+
+<script>
+function showFarmPosts(data){
+  var box=document.getElementById('farm-posts');
+  if(!box) return;
+  var entries=(data.feed&&data.feed.entry)||[];
+  if(!entries.length){box.innerHTML='<div class="card">아직 등록된 농장소식이 없습니다.</div>';return;}
+  box.innerHTML=entries.map(function(e){
+    var title=(e.title&&e.title.$t)||'농장소식';
+    var link='#'; (e.link||[]).forEach(function(x){if(x.rel==='alternate') link=x.href;});
+    var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
+    var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
+    var img=m?'<img class="card-img" src="'+m[1]+'" alt="">':'';
+    var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,90);
+    return '<a class="card" style="text-decoration:none;color:inherit" href="'+link+'" target="_blank" rel="noopener noreferrer">'+img+'<h3>'+title+'</h3><p>'+text+'</p></a>';
+  }).join('');
+}
+</script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default?alt=json-in-script&amp;max-results=6&amp;callback=showFarmPosts"></script>
+
 </body>
 </html>
