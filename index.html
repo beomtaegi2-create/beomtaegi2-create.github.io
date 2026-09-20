@@ -321,6 +321,17 @@ function showCropPosts(data){
   showPostsInBox({feed:{entry:merged}},'crop-posts','아직 등록된 농작물 소식이 없습니다.');
 }
 
+// Blogger 글에 아래 작물 이름 라벨만 붙여도 농작물 영역에 자동 표시합니다.
+var cropLabelEntries=[];
+function collectCropLabelPosts(data){
+  var entries=(data.feed&&data.feed.entry)||[];
+  entries.forEach(function(e){
+    var key=entryLink(e);
+    if(!cropLabelEntries.some(function(x){return entryLink(x)===key;})) cropLabelEntries.push(e);
+  });
+  showPostsInBox({feed:{entry:cropLabelEntries}},'crop-posts','아직 등록된 농작물 소식이 없습니다.');
+}
+
 function showDailyPosts(data){
   var dailyEntries=(data.feed&&data.feed.entry)||[];
   var seen={};
@@ -339,6 +350,25 @@ function showDailyPosts(data){
 <script src="https://sooginefarm.blogspot.com/feeds/posts/default?alt=json-in-script&amp;max-results=50&amp;callback=showFarmPosts"></script>
 <script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%86%8D%EC%9E%91%EB%AC%BC?alt=json-in-script&amp;max-results=6&amp;callback=showCropPosts"></script>
 <script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%86%8D%EC%9E%A5%EC%9D%BC%EC%83%81?alt=json-in-script&amp;max-results=6&amp;callback=showDailyPosts"></script>
+<!-- 작물별 라벨 자동 연결 -->
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%8C%80%EB%B4%89%EA%B0%90?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%8C%80%EC%B6%94?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%B0%A4?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%93%A4%EA%B9%A8?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EA%B3%A0%EC%B6%94?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EC%B2%AD%EC%96%91%EA%B3%A0%EC%B6%94?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EC%95%84%EC%82%AD%EC%9D%B4%EA%B3%A0%EC%B6%94?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%95%85%EC%BD%A9?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%91%90%EB%A6%85?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EC%82%B0%EB%91%90%EB%A6%85?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%95%85%EB%91%90%EB%A6%85?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%A8%B8%EC%9C%84?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EC%98%A4%EA%B0%80%ED%94%BC?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EA%B0%80%EC%A3%BD?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EC%97%84%EB%82%98%EB%AC%B4%EC%88%9C?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EC%98%BB%EC%88%9C?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EC%B2%AD%EA%B3%84%EC%95%8C?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%ED%91%9C%EA%B3%A0%EB%B2%84%EC%84%AF?alt=json-in-script&amp;max-results=6&amp;callback=collectCropLabelPosts"></script>
 
 </body>
 </html>
