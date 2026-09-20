@@ -124,7 +124,14 @@
   .hero h1{font-size:1.75rem; line-height:1.18;}
 }
 
-</style>
+
+    .price-table-wrap{overflow-x:auto;margin-top:16px}
+    .price-table{width:100%;border-collapse:collapse;background:#fff;table-layout:fixed}
+    .price-table th,.price-table td{padding:12px 6px;text-align:center;border-bottom:1px solid var(--line);font-size:clamp(.82rem,3.3vw,1rem);white-space:nowrap}
+    .price-table th{background:#f3efe3;color:var(--green);font-weight:800}
+    .price-table th:nth-child(1){width:25%}.price-table th:nth-child(2){width:20%}.price-table th:nth-child(3){width:27%}.price-table th:nth-child(4){width:28%}
+    .price-table td:nth-child(3){font-weight:800}
+  </style>
 </head>
 <body>
 <header>
@@ -235,6 +242,19 @@
   <div class="wrap">
     <h2 class="section-title">수확 · 판매 안내</h2>
     <p class="lead">제철 농산물은 수확 시기에 맞춰 안내합니다.</p>
+    <div class="card">
+      <h3>숙이네농장 품목·가격</h3>
+      <div class="price-table-wrap">
+        <table class="price-table">
+          <thead><tr><th>품목</th><th>판매단위</th><th>가격</th><th>현재상태</th></tr></thead>
+          <tbody>
+            <tr><td>대봉감</td><td>10kg</td><td>시세</td><td></td></tr>
+            <tr><td>들깨</td><td>6kg</td><td>시세</td><td></td></tr>
+            <tr><td>밤</td><td>1kg</td><td>시세</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div class="card">
       <h3>🍊 숙이네농장 대봉감 추가 예약 안내</h3>
       <p>
