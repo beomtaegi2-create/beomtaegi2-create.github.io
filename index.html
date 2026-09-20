@@ -129,7 +129,8 @@
       <a href="#spring">봄나물</a>
       <a href="#crops">재배작물</a>
       <a href="#photos">농장사진</a>
-      <a href="#news">농장소식</a>
+      <a href="#crops-news">농작물</a>
+      <a href="#daily-news">농장일상</a>
       <a href="#sale">판매안내</a>
       <a href="#contact">연락</a>
     </nav>
@@ -209,27 +210,33 @@
 </section>
 
 
-<section id="news">
+<section id="crops-news">
   <div class="wrap">
-    <h2 class="section-title">농장소식</h2>
+    <h2 class="section-title">🌾 농작물</h2>
     <p class="lead">Blogger에 올린 숙이네농장의 새 글과 사진입니다.</p>
-    <div id="farm-posts" class="cards"><div class="card">농장소식을 불러오는 중입니다.</div></div>
-
-    <h3 style="margin-top:28px">🌾 농작물</h3>
     <div id="crop-posts" class="cards"><div class="card">농작물 소식을 불러오는 중입니다.</div></div>
-
-    <h3 style="margin-top:28px">🏡 농장일상</h3>
-    <div id="daily-posts" class="cards"><div class="card">농장일상을 불러오는 중입니다.</div></div>
-
-    <p><a class="btn" style="background:var(--green);color:white" href="https://sooginefarm.blogspot.com/" target="_blank" rel="noopener noreferrer">농장소식 전체 보기</a></p>
   </div>
 </section>
 
+<section id="daily-news">
+  <div class="wrap">
+    <h2 class="section-title">🏡 농장일상</h2>
+    <p class="lead">Blogger에 올린 숙이네농장의 새 글과 사진입니다.</p>
+    <div id="daily-posts" class="cards"><div class="card">농장일상을 불러오는 중입니다.</div></div>
+  </div>
+</section>
 <section id="sale">
   <div class="wrap">
     <h2 class="section-title">수확 · 판매 안내</h2>
     <p class="lead">제철 농산물은 수확 시기에 맞춰 안내합니다.</p>
     <div class="card">
+      <h3>🍊 숙이네농장 대봉감 추가 예약 안내</h3>
+      <p>
+        기존 예약 수량이 일부 변경되어 <strong>대봉감 추가 예약을 받습니다.</strong><br>
+        수량이 한정되어 있으니 필요하신 분은 미리 예약해 주세요.<br>
+        <strong>대봉감 추가 예약 접수 중</strong> · 예약 및 문의는 카카오톡 채팅방으로 연락 주세요.
+      </p>
+      <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
       <h3>현재 안내</h3>
       <p>
         수확 시기와 판매 가능 여부는 농작물 상태에 따라 달라질 수 있습니다.<br>
@@ -257,21 +264,24 @@
 </footer>
 
 <script>
-function showFarmPosts(data){
-  var box=document.getElementById('farm-posts');
-  if(!box) return;
-  var entries=(data.feed&&data.feed.entry)||[];
-  if(!entries.length){box.innerHTML='<div class="card">아직 등록된 농장소식이 없습니다.</div>';return;}
-  box.innerHTML=entries.map(function(e){
-    var title=(e.title&&e.title.$t)||'농장소식';
-    var link='#'; (e.link||[]).forEach(function(x){if(x.rel==='alternate') link=x.href;});
-    var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
-    var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
-    var img=m?'<img class="card-img" src="'+m[1]+'" alt="">':'';
-    var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,90);
-    return '<a class="card" style="text-decoration:none;color:inherit" href="'+link+'" target="_blank" rel="noopener noreferrer">'+img+'<h3>'+title+'</h3><p>'+text+'</p></a>';
-  }).join('');
+var legacyDailyEntries=[];
+
+function entryLink(e){
+  var link='#';
+  (e.link||[]).forEach(function(x){if(x.rel==='alternate') link=x.href;});
+  return link;
 }
+
+function showFarmPosts(data){
+  var entries=(data.feed&&data.feed.entry)||[];
+  legacyDailyEntries=entries.filter(function(e){
+    var labels=(e.category||[]).map(function(c){return c.term;});
+    var title=(e.title&&e.title.$t)||'';
+    var noMainLabel=labels.indexOf('농작물')===-1 && labels.indexOf('농장일상')===-1;
+    return noMainLabel && /표고|버섯/.test(title);
+  });
+}
+
 function showPostsInBox(data, boxId, emptyText){
   var box=document.getElementById(boxId);
   if(!box) return;
@@ -279,7 +289,7 @@ function showPostsInBox(data, boxId, emptyText){
   if(!entries.length){box.innerHTML='<div class="card">'+emptyText+'</div>';return;}
   box.innerHTML=entries.map(function(e){
     var title=(e.title&&e.title.$t)||'농장소식';
-    var link='#'; (e.link||[]).forEach(function(x){if(x.rel==='alternate') link=x.href;});
+    var link=entryLink(e);
     var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
     var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
     var img=m?'<img class="card-img" src="'+m[1]+'" alt="">':'';
@@ -287,11 +297,39 @@ function showPostsInBox(data, boxId, emptyText){
     return '<a class="card" style="text-decoration:none;color:inherit" href="'+link+'" target="_blank" rel="noopener noreferrer">'+img+'<h3>'+title+'</h3><p>'+text+'</p></a>';
   }).join('');
 }
-function showCropPosts(data){showPostsInBox(data,'crop-posts','아직 등록된 농작물 소식이 없습니다.');}
-function showDailyPosts(data){showPostsInBox(data,'daily-posts','아직 등록된 농장일상이 없습니다.');}
+
+function showCropPosts(data){
+  var cropEntries=(data.feed&&data.feed.entry)||[];
+  var seen={};
+  var merged=[];
+
+  cropEntries.forEach(function(e){
+    var key=entryLink(e);
+    if(!seen[key]){
+      seen[key]=true;
+      merged.push(e);
+    }
+  });
+
+  showPostsInBox({feed:{entry:merged}},'crop-posts','아직 등록된 농작물 소식이 없습니다.');
+}
+
+function showDailyPosts(data){
+  var dailyEntries=(data.feed&&data.feed.entry)||[];
+  var seen={};
+  var merged=[];
+  dailyEntries.concat(legacyDailyEntries).forEach(function(e){
+    var key=entryLink(e);
+    if(!seen[key]){
+      seen[key]=true;
+      merged.push(e);
+    }
+  });
+  showPostsInBox({feed:{entry:merged}},'daily-posts','아직 등록된 농장일상이 없습니다.');
+}
 </script>
-<!-- 기존 전체 농장소식은 그대로 유지: 표고버섯·대봉감 예약 등 기존 글이 계속 보입니다. -->
-<script src="https://sooginefarm.blogspot.com/feeds/posts/default?alt=json-in-script&amp;max-results=10&amp;callback=showFarmPosts"></script>
+<!-- 예전에 라벨 없이 올린 표고버섯 글은 농장일상 영역에 함께 표시합니다. -->
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default?alt=json-in-script&amp;max-results=50&amp;callback=showFarmPosts"></script>
 <script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%86%8D%EC%9E%91%EB%AC%BC?alt=json-in-script&amp;max-results=6&amp;callback=showCropPosts"></script>
 <script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%86%8D%EC%9E%A5%EC%9D%BC%EC%83%81?alt=json-in-script&amp;max-results=6&amp;callback=showDailyPosts"></script>
 
