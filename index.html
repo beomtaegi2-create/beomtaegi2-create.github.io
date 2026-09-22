@@ -329,7 +329,7 @@ function showPostsInBox(data, boxId, emptyText){
     var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
     var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
     var img=m?'<img class="card-img" src="'+m[1]+'" alt="">':'';
-    var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,90);
+    var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
     return '<a class="card" style="text-decoration:none;color:inherit" href="'+link+'" target="_blank" rel="noopener noreferrer">'+img+'<h3>'+title+'</h3><p>'+text+'</p></a>';
   }).join('');
 }
@@ -354,7 +354,8 @@ function showNoticePosts(data){
     img=e.media$thumbnail.url.replace(/\/s72-c\//,'/s640/');
   }
 
-  var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,160);
+  var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
+  if(text.endsWith('다하겠습니')) text += '다.';
   box.innerHTML='<a href="'+link+'" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block">'
     +(img?'<img src="'+img+'" alt="'+title+'" style="width:100%;max-height:340px;object-fit:cover;border-radius:12px;margin:8px 0 12px;display:block">':'')
     +'<strong style="font-size:1.08rem">'+title+'</strong>'
@@ -392,7 +393,7 @@ function showJujubePosts(data){
   var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
   var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
   var img=m?'<img class="card-img" src="'+m[1]+'" alt="대추">':'<div class="emoji">🍎</div>';
-  var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,90);
+  var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
   box.innerHTML='<a style="text-decoration:none;color:inherit" href="'+link+'" target="_blank" rel="noopener noreferrer">'+img+'<h3>대추</h3><p>'+text+'</p></a>';
 }
 
