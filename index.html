@@ -343,6 +343,17 @@ function showNoticePosts(data){
     box.innerHTML='<span style="color:#666">현재 등록된 공지가 없습니다.</span>';
     return;
   }
+
+  // 홈공지는 Blogger 게시 시각부터 72시간 동안만 홈페이지에 표시합니다.
+  var published=(e.published&&e.published.$t)||'';
+  var publishedTime=Date.parse(published);
+  var NOTICE_HOURS=72;
+  if(!publishedTime || (Date.now()-publishedTime) >= NOTICE_HOURS*60*60*1000){
+    var noticeSection=document.getElementById('top-notice');
+    if(noticeSection) noticeSection.style.display='none';
+    return;
+  }
+
   var title=(e.title&&e.title.$t)||'숙이네농장 공지';
   var link=entryLink(e);
   var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
