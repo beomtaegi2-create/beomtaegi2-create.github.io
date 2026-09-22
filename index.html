@@ -150,9 +150,18 @@
   </div>
 </header>
 
+<section id="top-notice" style="padding:18px 18px 0">
+  <div class="wrap">
+    <div class="notice" style="padding:16px 18px">
+      <h2 style="margin:0 0 8px;color:var(--green);font-size:1.35rem">📢 숙이네농장 공지</h2>
+      <div id="notice-posts">공지사항을 불러오는 중입니다.</div>
+    </div>
+  </div>
+</section>
+
 <section class="hero">
   <div class="hero-inner">
-    <span class="tag">대전광역시 동구 신상동 51 · 숙이네농장</span>
+    <span class="tag">대전 동구 신상동 51</span>
     <h1>대전 동구 신상동<br>숙이네농장<br>자연 가까이에서 튼튼하게 키웁니다.</h1>
     <p>
       대전광역시 동구 신상동 51 숙이네농장은 봄에는 두릅·머위·오가피순·산두릅·땅두릅·가죽나물부터 시작하고,
@@ -325,6 +334,34 @@ function showPostsInBox(data, boxId, emptyText){
   }).join('');
 }
 
+function showNoticePosts(data){
+  var box=document.getElementById('notice-posts');
+  if(!box) return;
+  var entries=(data.feed&&data.feed.entry)||[];
+  var e=entries[0];
+  if(!e){
+    box.innerHTML='<span style="color:#666">현재 등록된 공지가 없습니다.</span>';
+    return;
+  }
+  var title=(e.title&&e.title.$t)||'숙이네농장 공지';
+  var link=entryLink(e);
+  var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
+
+  var img='';
+  var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  if(m && m[1]) img=m[1];
+  if(!img && e.media$thumbnail && e.media$thumbnail.url){
+    img=e.media$thumbnail.url.replace(/\/s72-c\//,'/s640/');
+  }
+
+  var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,160);
+  box.innerHTML='<a href="'+link+'" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block">'
+    +(img?'<img src="'+img+'" alt="'+title+'" style="width:100%;max-height:340px;object-fit:cover;border-radius:12px;margin:8px 0 12px;display:block">':'')
+    +'<strong style="font-size:1.08rem">'+title+'</strong>'
+    +(text?'<div style="margin-top:6px">'+text+'</div>':'')
+    +'</a>';
+}
+
 function showCropPosts(data){
   var cropEntries=((data.feed&&data.feed.entry)||[]).filter(function(e){
     var labels=(e.category||[]).map(function(c){return c.term;});
@@ -373,6 +410,8 @@ function showDailyPosts(data){
   showPostsInBox({feed:{entry:merged}},'daily-posts','아직 등록된 농장일상이 없습니다.');
 }
 </script>
+<!-- Blogger에서 라벨을 '홈공지'로 지정한 최신 글 1개를 홈페이지 공지 영역에 표시합니다. -->
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%ED%99%88%EA%B3%B5%EC%A7%80?alt=json-in-script&amp;max-results=1&amp;callback=showNoticePosts"></script>
 <!-- 예전에 라벨 없이 올린 표고버섯 글은 농장일상 영역에 함께 표시합니다. -->
 <script src="https://sooginefarm.blogspot.com/feeds/posts/default?alt=json-in-script&amp;max-results=50&amp;callback=showFarmPosts"></script>
 <script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EB%8C%80%EC%B6%94?alt=json-in-script&amp;max-results=1&amp;callback=showJujubePosts"></script>
