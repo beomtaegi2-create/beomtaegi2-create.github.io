@@ -132,6 +132,30 @@
     .price-table th:nth-child(1){width:25%}.price-table th:nth-child(2){width:20%}.price-table th:nth-child(3){width:27%}.price-table th:nth-child(4){width:28%}
     .price-table td:nth-child(3){font-weight:800}
   </style>
+
+<style>
+/* Blogger에서 불러오는 글은 홈페이지에서 모두 같은 크기로 표시 */
+#crop-posts .card p, #daily-posts .card p,
+#crop-chestnut p, #crop-jujube p,
+[id^="crop-"] .card p, [id^="crop-"] p {
+  font-size: 1rem !important;
+  line-height: 1.65 !important;
+  font-weight: 400 !important;
+}
+.blog-managed-content, .blog-managed-content p, .blog-managed-content div, .blog-managed-content span {
+  font-size: 1rem !important;
+  line-height: 1.65 !important;
+}
+@media (max-width: 640px){
+  #crop-posts .card p, #daily-posts .card p,
+  #crop-chestnut p, #crop-jujube p,
+  [id^="crop-"] .card p, [id^="crop-"] p,
+  .blog-managed-content, .blog-managed-content p, .blog-managed-content div, .blog-managed-content span {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+  }
+}
+</style>
 </head>
 <body>
 <header>
@@ -444,8 +468,7 @@ function showDailyPosts(data){
       return;
     }
     var body=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
-    box.innerHTML='<h3>'+title+'</h3><div class="blog-managed-content">'+body+'</div>'+
-      '';
+    box.innerHTML='<h3>'+title+'</h3><div class="blog-managed-content">'+body+'</div>';
   }
   window.showPriceList=function(d){ putBloggerBlock('blog-price-list','숙이네농장 품목·가격',d); };
   window.showSaleInfo=function(d){ putBloggerBlock('blog-sale-info','현재 안내',d); };
