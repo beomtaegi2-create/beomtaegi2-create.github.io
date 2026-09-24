@@ -188,7 +188,6 @@
       대전광역시 동구 신상동 51 숙이네농장은 봄에는 두릅·머위·오가피순·산두릅·땅두릅·가죽나물부터 시작하고,
       여름과 가을에는 고추·감·밤·대추 등 여러 농작물을 직접 가꾸고 있습니다.
     </p>
-    <a class="btn" href="#crops">재배 작물 보기</a>
   </div>
 </section>
 
@@ -446,7 +445,7 @@ function showDailyPosts(data){
     }
     var body=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
     box.innerHTML='<h3>'+title+'</h3><div class="blog-managed-content">'+body+'</div>'+
-      '<p style="margin-top:12px"><a href="'+altLink(e)+'" target="_blank" rel="noopener noreferrer">자세히 보기</a></p>';
+      '';
   }
   window.showPriceList=function(d){ putBloggerBlock('blog-price-list','숙이네농장 품목·가격',d); };
   window.showSaleInfo=function(d){ putBloggerBlock('blog-sale-info','현재 안내',d); };
