@@ -471,11 +471,32 @@ function showHomeGallery(data){
   var entries=(data.feed&&data.feed.entry)||[];
   fillHomePhoto('home-photo-view',pickHomeEntry(entries,['전경']), '🌿 산속 숙이네농장 전경');
   fillHomePhoto('home-photo-jujube',pickHomeEntry(entries,['대추']), '🍎 알차게 익어가는 대추');
-  fillHomePhoto('home-photo-chicken',pickHomeEntry(entries,['청계닭','청계알']), '🐔 농장에서 키우는 닭과 청계알');
   fillHomePhoto('home-photo-scenery',pickHomeEntry(entries,['풍경'],['전경']), '🌾 산과 어우러진 농장 풍경');
 }
 </script>
 <script src="https://sooginefarm.blogspot.com/feeds/posts/default?alt=json-in-script&amp;max-results=50&amp;callback=showHomeGallery"></script>
+
+<script>
+function showChickenHome(data){
+  var entries=(data&&data.feed&&data.feed.entry)||[];
+  if(!entries.length) return;
+  var e=entries[0], box=document.getElementById('home-photo-chicken');
+  if(!box) return;
+  var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
+  var img='';
+  var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  if(m) img=m[1].replace(/&amp;/g,'&');
+  if(!img && e.media$thumbnail && e.media$thumbnail.url){
+    img=e.media$thumbnail.url.replace(/\/s72-c\//,'/s1200/').replace(/=s72-c$/,'=s1200');
+  }
+  var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim();
+  if(!text) text='농장에서 키우는 청계닭';
+  var link=entryLink(e);
+  box.innerHTML=(img?'<a href="'+link+'" target="_blank" rel="noopener noreferrer"><img src="'+img+'" alt="청계닭"></a>':'')+'<span>'+text+'</span>';
+}
+</script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EC%B2%AD%EA%B3%84%EB%8B%AD?alt=json-in-script&amp;max-results=1&amp;callback=showChickenHome"></script>
+
 <!-- Blogger에서 라벨을 '홈공지'로 지정한 최신 글 1개를 홈페이지 공지 영역에 표시합니다. -->
 <script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%ED%99%88%EA%B3%B5%EC%A7%80?alt=json-in-script&amp;max-results=1&amp;callback=showNoticePosts"></script>
 <!-- 예전에 라벨 없이 올린 표고버섯 글은 농장일상 영역에 함께 표시합니다. -->
