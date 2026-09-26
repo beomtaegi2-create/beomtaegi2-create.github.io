@@ -476,7 +476,7 @@ function showDailyPosts(data){
     var e=entries[0];
     var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
     var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
-    var media=m ? '<img class="card-img" src="'+esc(m[1])+'" alt="'+esc(label)+'">' : '<div class="emoji">🌱</div>';
+    var media=m ? '<img class="card-img" src="'+esc(m[1])+'" alt="'+esc(label)+'">' : (label==='고추' ? '' : '<div class="emoji">🌱</div>');
     var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,100);
     box.innerHTML='<a style="text-decoration:none;color:inherit" href="'+esc(postLink(e))+'" target="_blank" rel="noopener noreferrer">'+
       media+'<h3>'+esc(label)+'</h3><p>'+esc(text)+'</p></a>';
