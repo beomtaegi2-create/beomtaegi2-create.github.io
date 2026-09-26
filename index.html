@@ -79,7 +79,7 @@
       padding:22px;box-shadow:0 7px 20px rgba(0,0,0,.04);
     }
     .price-card{padding-top:14px}
-    .price-title{font-size:1.55rem;margin:0 0 14px;line-height:1.2}
+    .price-title{font-size:1.35rem;margin:0 0 10px;line-height:1.2}
     .emoji{font-size:2.3rem}
     .gallery{
       display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
@@ -224,7 +224,7 @@
     <span class="tag">대전 동구 신상동 51</span>
     <h1>대전 동구 신상동<br>숙이네농장<br>자연 가까이에서 튼튼하게 키웁니다.</h1>
     <p>
-      대전광역시 동구 신상동 51 숙이네농장은 봄에는 두릅·머위·오가피순·산두릅·땅두릅·가죽나물부터 시작하고,
+      대전광역시 동구 신상동 51 숙이네농장은 봄에는 달래·머위·오가피순·산두릅·땅두릅·가죽나물부터 시작하고,
       여름과 가을에는 고추·감·밤·대추 등 여러 농작물을 직접 가꾸고 있습니다.
     </p>
     <a class="btn" href="#crops">재배 작물 보기</a>
@@ -245,10 +245,10 @@
 
 <section id="spring">
   <div class="wrap">
-    <h2 class="section-title" style="font-size:clamp(1.55rem,6.6vw,2.05rem)">🌱 봄에 가장 먼저 만나는<br><span style="display:inline-block;padding-left:1.65em">산나물</span></h2>
+    <h2 class="section-title" style="font-size:clamp(1.45rem,5.8vw,1.9rem);white-space:nowrap">🌱 봄에 가장 먼저 만나는<br><span style="display:inline-block;padding-left:1.65em">산나물</span></h2>
     <p class="lead">숙이네농장의 한 해는 향긋한 봄나물부터 시작됩니다.</p>
     <div class="cards">
-      <div class="card"><div class="emoji" id="crop-dureup">🌿</div><h3>두릅</h3><p>봄철 어린순을 수확해 향긋하게 즐기는 대표 봄나물입니다.</p></div>
+      <div class="card"><div class="emoji" id="crop-dureup">🌱</div><h3>달래</h3><p>봄철 향긋한 향과 알싸한 맛을 즐기는 대표 봄나물입니다.</p></div>
       <div class="card"><div class="emoji" id="crop-meowi">🍃</div><h3>머위</h3><p>이른 봄부터 돋아나는 잎과 줄기를 먹는 산나물입니다.</p></div>
       <div class="card"><div class="emoji" id="crop-ogapi">🌱</div><h3>오가피순</h3><p>연한 새순이 올라올 때 채취해 봄나물로 이용합니다.</p></div>
       <div class="card"><div class="emoji" id="crop-sandureup">🌿</div><h3>산두릅</h3><p>산에서 자라는 두릅으로, 봄철 향이 진한 새순을 수확합니다.</p></div>
@@ -451,7 +451,7 @@ function showDailyPosts(data){
 
 <script>
 (function(){
-  var FARM_ITEMS=[["두릅","crop-dureup"],["머위","crop-meowi"],["오가피순","crop-ogapi"],["산두릅","crop-sandureup"],["땅두릅","crop-ttangdureup"],["가죽나물","crop-gajuk"],["엄나무순","crop-eomnamu"],["옻순","crop-ot"],["고추","crop-pepper"],["대봉감","crop-daebong"],["밤","crop-chestnut"],["대추","crop-jujube"],["들깨","crop-perilla"],["땅콩","crop-peanut"]];
+  var FARM_ITEMS=[["달래","crop-dureup"],["머위","crop-meowi"],["오가피순","crop-ogapi"],["산두릅","crop-sandureup"],["땅두릅","crop-ttangdureup"],["가죽나물","crop-gajuk"],["엄나무순","crop-eomnamu"],["옻순","crop-ot"],["고추","crop-pepper"],["대봉감","crop-daebong"],["밤","crop-chestnut"],["대추","crop-jujube"],["들깨","crop-perilla"],["땅콩","crop-peanut"]];
 
   function esc(x){
     return String(x||'').replace(/[&<>"']/g,function(c){
