@@ -505,7 +505,7 @@ function showPricePosts(data){
 <script>
 (function(){
  var el=document.getElementById('cheonggye-img'); if(!el)return;
- window.__cheonggyeFeed=function(j){try{var e=j.feed.entry&&j.feed.entry[0];if(!e)return;var h=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';var m=h.match(/<img[^>]+src=["']([^"']+)["']/i);if(m)el.src=m[1];}catch(x){}};
+ window.__cheonggyeFeed=function(j){try{var e=j.feed.entry&&j.feed.entry[0];if(!e)return;var h=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';var m=h.match(/<img[^>]+(?:src|data-original|data-src)=["']([^"']+)["']/i);var u=(e.media$thumbnail&&e.media$thumbnail.url)||(m&&m[1]);if(u){u=u.replace(/\/s72-c\//,'/s1600/').replace(/=s72-c$/,'=s1600');el.src=u;}}catch(x){}};
  var sc=document.createElement('script');sc.src='https://sooginefarm.blogspot.com/feeds/posts/default/-/'+encodeURIComponent('청계닭')+'?alt=json-in-script&max-results=1&callback=__cheonggyeFeed';document.body.appendChild(sc);
 })();
 </script>
