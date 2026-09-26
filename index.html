@@ -78,6 +78,8 @@
       background:white;border:1px solid var(--line);border-radius:16px;
       padding:22px;box-shadow:0 7px 20px rgba(0,0,0,.04);
     }
+    .price-card{padding-top:14px}
+    .price-title{font-size:1.55rem;margin:0 0 14px;line-height:1.2}
     .emoji{font-size:2.3rem}
     .gallery{
       display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
@@ -181,18 +183,9 @@
   <div class="wrap">
     <h2 class="section-title">수확 · 판매 안내</h2>
     <p class="lead">제철 농산물은 수확 시기에 맞춰 안내합니다.</p>
-    <div class="card">
-      <h3>숙이네농장 품목·가격</h3>
-      <div class="price-table-wrap">
-        <table class="price-table">
-          <thead><tr><th>품목</th><th>판매단위</th><th>가격</th><th>현재상태</th></tr></thead>
-          <tbody>
-            <tr><td>대봉감</td><td>10kg</td><td>시세</td><td></td></tr>
-            <tr><td>들깨</td><td>6kg</td><td>시세</td><td></td></tr>
-            <tr><td>밤</td><td>1kg</td><td>시세</td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="card price-card">
+      <h3 class="price-title">숙이네농장 가격표</h3>
+      <div id="price-posts">가격표를 불러오는 중입니다.</div>
     </div>
     <div class="card">
       <h3>🍊 숙이네농장 대봉감 추가 예약 안내</h3>
@@ -252,10 +245,10 @@
 
 <section id="spring">
   <div class="wrap">
-    <h2 class="section-title" style="font-size:clamp(1.45rem,6.1vw,2.05rem)"><span style="white-space:nowrap">🌱 봄에 가장 먼저 만나는</span><br><span style="display:block;text-align:left;padding-left:1.65em">산나물</span></h2>
+    <h2 class="section-title" style="font-size:clamp(1.55rem,6.6vw,2.05rem)">🌱 봄에 가장 먼저 만나는<br><span style="display:inline-block;padding-left:1.65em">산나물</span></h2>
     <p class="lead">숙이네농장의 한 해는 향긋한 봄나물부터 시작됩니다.</p>
     <div class="cards">
-      <div class="card"><div class="emoji" id="crop-dureup">🌿</div><h3>달래</h3><p>향긋한 봄 향이 좋은 대표 봄나물입니다.</p></div>
+      <div class="card"><div class="emoji" id="crop-dureup">🌿</div><h3>두릅</h3><p>봄철 어린순을 수확해 향긋하게 즐기는 대표 봄나물입니다.</p></div>
       <div class="card"><div class="emoji" id="crop-meowi">🍃</div><h3>머위</h3><p>이른 봄부터 돋아나는 잎과 줄기를 먹는 산나물입니다.</p></div>
       <div class="card"><div class="emoji" id="crop-ogapi">🌱</div><h3>오가피순</h3><p>연한 새순이 올라올 때 채취해 봄나물로 이용합니다.</p></div>
       <div class="card"><div class="emoji" id="crop-sandureup">🌿</div><h3>산두릅</h3><p>산에서 자라는 두릅으로, 봄철 향이 진한 새순을 수확합니다.</p></div>
@@ -386,7 +379,7 @@ function showNoticePosts(data){
 function showCropPosts(data){
   var cropEntries=((data.feed&&data.feed.entry)||[]).filter(function(e){
     var labels=(e.category||[]).map(function(c){return c.term;});
-    return labels.indexOf('대추')===-1 && labels.indexOf('밤')===-1;
+    return labels.indexOf('대추')===-1 && labels.indexOf('밤')===-1 && labels.indexOf('고추')===-1;
   });
   var seen={};
   var merged=[];
@@ -458,7 +451,7 @@ function showDailyPosts(data){
 
 <script>
 (function(){
-  var FARM_ITEMS=[["달래","crop-dureup"],["머위","crop-meowi"],["오가피순","crop-ogapi"],["산두릅","crop-sandureup"],["땅두릅","crop-ttangdureup"],["가죽나물","crop-gajuk"],["엄나무순","crop-eomnamu"],["옻순","crop-ot"],["고추","crop-pepper"],["대봉감","crop-daebong"],["밤","crop-chestnut"],["대추","crop-jujube"],["들깨","crop-perilla"],["땅콩","crop-peanut"]];
+  var FARM_ITEMS=[["두릅","crop-dureup"],["머위","crop-meowi"],["오가피순","crop-ogapi"],["산두릅","crop-sandureup"],["땅두릅","crop-ttangdureup"],["가죽나물","crop-gajuk"],["엄나무순","crop-eomnamu"],["옻순","crop-ot"],["고추","crop-pepper"],["대봉감","crop-daebong"],["밤","crop-chestnut"],["대추","crop-jujube"],["들깨","crop-perilla"],["땅콩","crop-peanut"]];
 
   function esc(x){
     return String(x||'').replace(/[&<>"']/g,function(c){
@@ -476,7 +469,7 @@ function showDailyPosts(data){
     var e=entries[0];
     var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
     var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
-    var media=m ? '<img class="card-img" src="'+esc(m[1])+'" alt="'+esc(label)+'">' : (label==='고추' ? '' : '<div class="emoji">🌱</div>');
+    var media=m ? '<img class="card-img" src="'+esc(m[1])+'" alt="'+esc(label)+'">' : '<div class="emoji">🌱</div>';
     var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,100);
     box.innerHTML='<a style="text-decoration:none;color:inherit" href="'+esc(postLink(e))+'" target="_blank" rel="noopener noreferrer">'+
       media+'<h3>'+esc(label)+'</h3><p>'+esc(text)+'</p></a>';
@@ -492,5 +485,21 @@ function showDailyPosts(data){
 })();
 </script>
 
+
+<script>
+function showPricePosts(data){
+  var box=document.getElementById('price-posts');
+  if(!box) return;
+  var entries=(data.feed&&data.feed.entry)||[];
+  if(!entries.length){
+    box.innerHTML='<p>현재 등록된 가격표가 없습니다.</p>';
+    return;
+  }
+  var e=entries[0];
+  var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
+  box.innerHTML=html;
+}
+</script>
+<script src="https://sooginefarm.blogspot.com/feeds/posts/default/-/%EA%B0%80%EA%B2%A9%ED%91%9C?alt=json-in-script&amp;max-results=1&amp;callback=showPricePosts"></script>
 </body>
 </html>
