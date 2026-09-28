@@ -181,26 +181,11 @@
 </section>
 <section id="sale">
   <div class="wrap">
-    <h2 class="section-title">수확 · 판매 안내</h2>
+    <h2 class="section-title" style="font-size:1.35rem">수확 · 판매 안내</h2>
     <p class="lead">제철 농산물은 수확 시기에 맞춰 안내합니다.</p>
     <div class="card price-card">
       <h3 class="price-title">숙이네농장 가격표</h3>
       <div id="price-posts">가격표를 불러오는 중입니다.</div>
-    </div>
-    <div class="card">
-      <h3>🍊 숙이네농장 대봉감 추가 예약 안내</h3>
-      <p>
-        기존 예약 수량이 일부 변경되어 <strong>대봉감 추가 예약을 받습니다.</strong><br>
-        수량이 한정되어 있으니 필요하신 분은 미리 예약해 주세요.<br>
-        <strong>대봉감 추가 예약 접수 중</strong> · 예약 및 문의는 카카오톡 채팅방으로 연락 주세요.
-      </p>
-      <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-      <h3>현재 안내</h3>
-      <p>
-        수확 시기와 판매 가능 여부는 농작물 상태에 따라 달라질 수 있습니다.<br>
-        <strong>택배 판매는 하지 않으며, 예약 후 농장 방문 수령을 기본으로 합니다.</strong><br>
-        대량 주문은 수량·지역에 따라 별도 협의 가능합니다. 카카오톡으로 문의해주세요.
-      </p>
     </div>
   </div>
 </section>
@@ -368,7 +353,7 @@ function showNoticePosts(data){
     img=e.media$thumbnail.url.replace(/\/s72-c\//,'/s640/');
   }
 
-  var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,160);
+  var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/🌰\s*밤 수확 즉시 판매합니다\.?/g,' ').replace(/\s+/g,' ').trim().slice(0,160);
   box.innerHTML='<a href="'+link+'" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block">'
     +(img?'<img src="'+img+'" alt="'+title+'" style="width:100%;max-height:340px;object-fit:cover;border-radius:12px;margin:8px 0 12px;display:block">':'')
     +'<strong style="font-size:1.08rem">'+title+'</strong>'
