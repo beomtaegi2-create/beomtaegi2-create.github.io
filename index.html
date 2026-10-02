@@ -344,11 +344,27 @@ function showNoticePosts(data){
     img=e.media$thumbnail.url.replace(/\/s72-c\//,'/s640/');
   }
 
-  var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/🌰\s*밤 수확 즉시 판매합니다\.?/g,' ').replace(/\s+/g,' ').trim().slice(0,160);
+  // Blogger의 줄바꿈과 문단을 공지 본문에 그대로 반영합니다.
+  var noticeDoc=new DOMParser().parseFromString(html,'text/html');
+  function noticeText(node){
+    if(node.nodeType===3) return node.nodeValue.replace(/[\r\n\t]+/g,' ');
+    if(node.nodeType!==1) return '';
+    var tag=node.tagName.toLowerCase();
+    if(/^(script|style|noscript|img)$/.test(tag)) return '';
+    if(tag==='br') return '\n';
+    var value=Array.prototype.map.call(node.childNodes,noticeText).join('');
+    return /^(p|div|h[1-6]|li|blockquote|section|article|tr)$/.test(tag)
+      ? value+'\n' : value;
+  }
+  var text=Array.prototype.map.call(noticeDoc.body.childNodes,noticeText).join('')
+    .replace(/\u00a0/g,' ').replace(/[ \t]+/g,' ')
+    .replace(/ *\n */g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+  // 본문을 HTML이 아닌 안전한 텍스트로 표시합니다.
+  text=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   box.innerHTML='<a href="'+link+'" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block">'
     +(img?'<img src="'+img+'" alt="'+title+'" style="width:100%;max-height:340px;object-fit:cover;border-radius:12px;margin:8px 0 12px;display:block">':'')
     +'<strong style="font-size:1.08rem">'+title+'</strong>'
-    +(text?'<div style="margin-top:6px">'+text+'</div>':'')
+    +(text?'<div style="margin-top:6px;white-space:pre-wrap;overflow-wrap:anywhere">'+text+'</div>':'')
     +'</a>';
 }
 
