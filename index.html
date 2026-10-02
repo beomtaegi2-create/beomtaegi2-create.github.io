@@ -319,7 +319,8 @@ function showPostsInBox(data, boxId, emptyText){
     var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
     var m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
     var img=m?'<img class="card-img" src="'+m[1]+'" alt="">':'';
-    var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim().slice(0,90);
+    var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
+    if(boxId!=='daily-posts') text=text.slice(0,90);
     return '<a class="card" style="text-decoration:none;color:inherit" href="'+link+'" target="_blank" rel="noopener noreferrer">'+img+'<h3>'+title+'</h3><p>'+text+'</p></a>';
   }).join('');
 }
