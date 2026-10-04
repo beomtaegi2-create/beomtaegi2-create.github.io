@@ -152,6 +152,17 @@
       #sale,#spring,#crops-news,#daily-news{padding-top:15px;}
       #about,#photos,#crops{padding-bottom:15px;}
     }
+
+.daily-gallery{position:relative;margin-bottom:12px}
+.daily-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:10px}
+.daily-track::-webkit-scrollbar{display:none}
+.daily-track .daily-slide{flex:0 0 100%;min-width:0;scroll-snap-align:start}
+.daily-track .card-img{display:block;width:100%;height:240px;object-fit:contain;background:#f2eee5;margin:0}
+.daily-controls{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:8px}
+.daily-controls button{border:1px solid var(--line);border-radius:50%;background:white;color:var(--green);width:40px;height:40px;font-size:24px;cursor:pointer}
+.daily-controls button:disabled{opacity:.35;cursor:default}
+.daily-count{font-weight:700;font-size:.9rem;min-width:42px;text-align:center}
+.daily-hint{text-align:center;font-size:.85rem;color:#666;margin:5px 0 0}
 </style>
 </head>
 <body>
@@ -309,9 +320,59 @@ function showFarmPosts(data){
   });
 }
 
+function renderDailyCards(data,boxId,emptyText){
+  var box=document.getElementById(boxId); if(!box) return;
+  box.innerHTML='';
+  var entries=(data.feed&&data.feed.entry)||[];
+  if(!entries.length){var empty=document.createElement('div');empty.className='card';empty.textContent=emptyText;box.appendChild(empty);return;}
+  entries.forEach(function(e){
+    var title=(e.title&&e.title.$t)||'농장일상';
+    var link=entryLink(e);
+    var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
+    var doc=new DOMParser().parseFromString(html,'text/html');
+    var card=document.createElement('div');card.className='card';
+    var gallery=document.createElement('div');gallery.className='daily-gallery';
+    var track=document.createElement('div');track.className='daily-track';
+    track.setAttribute('aria-label',title+' 사진');
+    var photos=[],seen={};
+    Array.prototype.forEach.call(doc.querySelectorAll('img'),function(img){
+      try{var url=new URL(img.getAttribute('src')||'', 'https://sooginefarm.blogspot.com/');
+        if(!img.getAttribute('src')||url.protocol!=='https:'||seen[url.href]) return;
+        seen[url.href]=true;photos.push({src:url.href,alt:img.getAttribute('alt')||title});
+      }catch(err){}
+    });
+    photos.forEach(function(photo,i){
+      var slide=document.createElement('a');slide.className='daily-slide';slide.href=link;slide.target='_blank';slide.rel='noopener noreferrer';
+      var img=document.createElement('img');img.className='card-img';img.src=photo.src;img.alt=photo.alt+' ('+(i+1)+'/'+photos.length+')';img.loading='lazy';img.draggable=false;
+      slide.appendChild(img);track.appendChild(slide);
+    });
+    if(photos.length){gallery.appendChild(track);card.appendChild(gallery);}
+    if(photos.length>1){
+      var controls=document.createElement('div');controls.className='daily-controls';
+      var prev=document.createElement('button');prev.type='button';prev.textContent='‹';prev.setAttribute('aria-label','이전 사진');
+      var count=document.createElement('span');count.className='daily-count';count.setAttribute('aria-live','polite');
+      var next=document.createElement('button');next.type='button';next.textContent='›';next.setAttribute('aria-label','다음 사진');
+      var current=0;
+      function update(){current=Math.max(0,Math.min(photos.length-1,Math.round(track.scrollLeft/(track.clientWidth||1))));count.textContent=(current+1)+'/'+photos.length;prev.disabled=current===0;next.disabled=current===photos.length-1;}
+      function move(step){track.scrollTo({left:(current+step)*track.clientWidth,behavior:'smooth'});}
+      prev.addEventListener('click',function(){move(-1);});next.addEventListener('click',function(){move(1);});
+      track.tabIndex=0;track.addEventListener('keydown',function(ev){if(ev.key==='ArrowRight'||ev.key==='ArrowLeft'){ev.preventDefault();move(ev.key==='ArrowRight'?1:-1);}});
+      track.addEventListener('scroll',update);controls.appendChild(prev);controls.appendChild(count);controls.appendChild(next);gallery.appendChild(controls);
+      var hint=document.createElement('p');hint.className='daily-hint';hint.textContent='사진이 더 있어요 · 좌우로 넘겨보세요';gallery.appendChild(hint);update();
+      if(window.ResizeObserver){new ResizeObserver(function(){track.scrollLeft=current*track.clientWidth;update();}).observe(track);}
+    }
+    var info=document.createElement('a');info.href=link;info.target='_blank';info.rel='noopener noreferrer';info.style.cssText='text-decoration:none;color:inherit';
+    var h=document.createElement('h3');h.textContent=title;info.appendChild(h);
+    var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
+    if(boxId==='daily-latest-posts') text=text.slice(0,90);
+    var desc=document.createElement('p');desc.textContent=text;info.appendChild(desc);card.appendChild(info);box.appendChild(card);
+  });
+}
+
 function showPostsInBox(data, boxId, emptyText){
   var box=document.getElementById(boxId);
   if(!box) return;
+  if(boxId==='daily-posts'||boxId==='daily-latest-posts'){renderDailyCards(data,boxId,emptyText);return;}
   var entries=(data.feed&&data.feed.entry)||[];
   if(!entries.length){box.innerHTML='<div class="card">'+emptyText+'</div>';return;}
   box.innerHTML=entries.map(function(e){
