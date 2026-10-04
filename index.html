@@ -61,6 +61,8 @@
       padding:7px 12px;border-radius:999px;font-size:.9rem;
     }
     h1{font-size:clamp(2.3rem,6vw,4.6rem);line-height:1.1;margin:18px 0 14px}
+    .hero .farm-intro-title{display:block;width:fit-content;margin:0 auto;font-size:clamp(2rem,5.6vw,4.2rem);font-weight:800;line-height:1.3;text-align:center}
+    .hero h1{font-size:clamp(1.65rem,4vw,3rem);line-height:1.3;word-break:keep-all}
     .hero p{font-size:1.15rem;max-width:680px}
     .btn{
       display:inline-block;margin-top:18px;padding:12px 18px;border-radius:10px;
@@ -121,13 +123,14 @@
       .hero{min-height:60vh}
       .gallery{grid-template-columns:1fr}
       section{padding:55px 18px}
-      #about{padding-bottom:10px}
+      #about:not(.hero){padding-bottom:10px}
       #spring{padding-top:15px}
     }
   
 @media (max-width:600px){
   .hero .tag{font-size:.72rem; white-space:nowrap;}
-  .hero h1{font-size:1.75rem; line-height:1.18;}
+  .hero .tag.farm-intro-title{font-size:2rem;font-weight:800;line-height:1.35;}
+  .hero h1{font-size:1.4rem;line-height:1.35;word-break:keep-all;}
 }
 
 
@@ -150,7 +153,7 @@
       section:not(.hero){padding-top:25px;padding-bottom:25px;}
       #top-notice{padding-bottom:10px !important;}
       #sale,#spring,#crops-news,#daily-news{padding-top:15px;}
-      #about,#photos,#crops{padding-bottom:15px;}
+      #about:not(.hero),#photos,#crops{padding-bottom:15px;}
     }
 
 .daily-gallery{position:relative;margin-bottom:12px}
@@ -214,28 +217,18 @@
 
 
 
-<section class="hero">
+<section class="hero" id="about">
   <div class="hero-inner">
-    <span class="tag">대전 동구 신상동 51</span>
+    <span class="tag farm-intro-title">농장소개</span>
     <h1>대전 동구 신상동<br>숙이네농장<br>자연 가까이에서 튼튼하게 키웁니다.</h1>
     <p>
-      대전광역시 동구 신상동 51 숙이네농장은 봄에는 달래·머위·오가피순·산두릅·땅두릅·가죽나물부터 시작하고,
-      여름과 가을에는 고추·감·밤·대추 등 여러 농작물을 직접 가꾸고 있습니다.
+      산속의 작은 농장에서 직접 심고, 물 주고, 수확합니다. 이른 봄 산나물부터 여름·가을 농산물까지 계절 따라 이어지는 숙이네농장의 모습을 담습니다.
     </p>
     <a class="btn" href="#crops">재배 작물 보기</a>
   </div>
 </section>
 
-<section id="about">
-  <div class="wrap">
-    <h2 class="section-title">농장 소개</h2>
-    <p class="lead">
-      <strong>대전광역시 동구 신상동에 있는 숙이네농장입니다.</strong><br>
-      산속의 작은 농장에서 직접 심고, 물 주고, 수확합니다.
-      이른 봄 산나물부터 여름·가을 농산물까지 계절 따라 이어지는 숙이네농장의 모습을 담습니다.
-    </p>
-  </div>
-</section>
+
 
 
 <section id="daily-latest">
