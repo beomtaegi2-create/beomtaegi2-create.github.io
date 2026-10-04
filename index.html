@@ -364,7 +364,6 @@ function renderDailyCards(data,boxId,emptyText){
     var info=document.createElement('a');info.href=link;info.target='_blank';info.rel='noopener noreferrer';info.style.cssText='text-decoration:none;color:inherit';
     var h=document.createElement('h3');h.textContent=title;info.appendChild(h);
     var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
-    if(boxId==='daily-latest-posts') text=text.slice(0,90);
     var desc=document.createElement('p');desc.textContent=text;info.appendChild(desc);card.appendChild(info);box.appendChild(card);
   });
 }
