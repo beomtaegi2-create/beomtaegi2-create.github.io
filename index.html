@@ -231,14 +231,6 @@
 
 
 
-<section id="daily-latest">
-  <div class="wrap">
-    <h2 class="section-title">🏡 최근 농장일상</h2>
-    <div id="daily-latest-posts" class="cards"><div class="card">최근 농장일상을 불러오는 중입니다.</div></div>
-    <p style="text-align:center;margin:18px 0 0"><a class="btn" href="#daily-news">농장일상 더 보기</a></p>
-  </div>
-</section>
-
 <section id="spring">
   <div class="wrap">
     <h2 class="section-title" style="font-size:clamp(1.45rem,5.8vw,1.9rem);white-space:nowrap">🌱 봄에 가장 먼저 만나는<br><span style="display:inline-block;padding-left:1.65em">산나물</span></h2>
@@ -364,7 +356,7 @@ function renderDailyCards(data,boxId,emptyText){
 function showPostsInBox(data, boxId, emptyText){
   var box=document.getElementById(boxId);
   if(!box) return;
-  if(boxId==='daily-posts'||boxId==='daily-latest-posts'){renderDailyCards(data,boxId,emptyText);return;}
+  if(boxId==='daily-posts'){renderDailyCards(data,boxId,emptyText);return;}
   var entries=(data.feed&&data.feed.entry)||[];
   if(!entries.length){box.innerHTML='<div class="card">'+emptyText+'</div>';return;}
   box.innerHTML=entries.map(function(e){
@@ -546,7 +538,6 @@ function showDailyPosts(data){
   merged.sort(function(a,b){
     return new Date((b.published&&b.published.$t)||0)-new Date((a.published&&a.published.$t)||0);
   });
-  showPostsInBox({feed:{entry:merged.slice(0,2)}},'daily-latest-posts','아직 등록된 농장일상이 없습니다.');
   showPostsInBox({feed:{entry:merged}},'daily-posts','아직 등록된 농장일상이 없습니다.');
 }
 
