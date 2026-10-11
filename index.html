@@ -305,17 +305,8 @@ function showFarmPosts(data){
   });
 }
 
-function renderDailyCards(data,boxId,emptyText){
-  var box=document.getElementById(boxId); if(!box) return;
-  box.innerHTML='';
-  var entries=(data.feed&&data.feed.entry)||[];
-  if(!entries.length){var empty=document.createElement('div');empty.className='card';empty.textContent=emptyText;box.appendChild(empty);return;}
-  entries.forEach(function(e){
-    var title=(e.title&&e.title.$t)||'농장일상';
-    var link=entryLink(e);
-    var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
+function appendPostGallery(card,title,link,html){
     var doc=new DOMParser().parseFromString(html,'text/html');
-    var card=document.createElement('div');card.className='card';
     var gallery=document.createElement('div');gallery.className='daily-gallery';
     var track=document.createElement('div');track.className='daily-track';
     track.setAttribute('aria-label',title+' 사진');
@@ -346,6 +337,19 @@ function renderDailyCards(data,boxId,emptyText){
       var hint=document.createElement('p');hint.className='daily-hint';hint.textContent='사진이 더 있어요 · 좌우로 넘겨보세요';gallery.appendChild(hint);update();
       if(window.ResizeObserver){new ResizeObserver(function(){track.scrollLeft=current*track.clientWidth;update();}).observe(track);}
     }
+}
+
+function renderDailyCards(data,boxId,emptyText){
+  var box=document.getElementById(boxId); if(!box) return;
+  box.innerHTML='';
+  var entries=(data.feed&&data.feed.entry)||[];
+  if(!entries.length){var empty=document.createElement('div');empty.className='card';empty.textContent=emptyText;box.appendChild(empty);return;}
+  entries.forEach(function(e){
+    var title=(e.title&&e.title.$t)||'농장일상';
+    var link=entryLink(e);
+    var html=(e.content&&e.content.$t)||(e.summary&&e.summary.$t)||'';
+    var card=document.createElement('div');card.className='card';
+    appendPostGallery(card,title,link,html);
     var info=document.createElement('a');info.href=link;info.target='_blank';info.rel='noopener noreferrer';info.style.cssText='text-decoration:none;color:inherit';
     var h=document.createElement('h3');h.textContent=title;info.appendChild(h);
     var text=html.replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
@@ -409,10 +413,13 @@ function showNoticePosts(data){
   // 본문을 HTML이 아닌 안전한 텍스트로 표시합니다.
   text=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   box.innerHTML='<a href="'+link+'" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block">'
-    +(img?'<img src="'+img+'" alt="'+title+'" style="width:100%;max-height:340px;object-fit:cover;border-radius:12px;margin:8px 0 12px;display:block">':'')
     +'<strong style="font-size:1.08rem">'+title+'</strong>'
     +(text?'<div style="margin-top:6px;white-space:pre-wrap;overflow-wrap:anywhere">'+text+'</div>':'')
     +'</a>';
+  var galleryBox=document.createElement('div');
+  appendPostGallery(galleryBox,title,link,html);
+  if(galleryBox.firstChild){box.insertBefore(galleryBox,box.firstChild);}
+  else if(img){var fallback=document.createElement('img');fallback.src=img;fallback.alt=title;fallback.className='card-img';box.insertBefore(fallback,box.firstChild);}
 }
 
 function showFarmPhotoPosts(data){
